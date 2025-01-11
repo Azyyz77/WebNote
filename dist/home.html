@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web Note</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-900">
+
+  <!-- Navigation Bar -->
+  <nav class="bg-gray-600 text-white py-4 px-8 flex justify-between items-center shadow-md">
+    <div class="flex items-center space-x-4">
+      <img src="https://static.vecteezy.com/system/resources/previews/010/760/390/large_2x/wn-logo-w-n-design-white-wn-letter-wn-letter-logo-design-initial-letter-wn-linked-circle-uppercase-monogram-logo-vector.jpg" alt="Web Note Logo" class="w-12 h-12">
+      <h1 class="text-xl font-bold">Web Note</h1>
+    </div>
+    <ul class="flex space-x-6">
+      <li><a href="#" class="hover:underline text-white">Home</a></li>
+      <li><a href="create.html" class="hover:underline text-white">Create</a></li>
+      <li><a href="view.html" class="hover:underline text-white">View Notes</a></li>
+      <li><a href="settings.html" class="hover:underline text-white">Settings</a></li>
+    </ul>
+  </nav>
+
+  <!-- Reduced Section -->
+  <section class="flex flex-col lg:flex-row items-center justify-between w-full max-h-[600px] px-8 py-12 bg-gradient-to-r from-yellow-100 to-yellow-200 rounded-lg shadow-xl mt-4">
+    <!-- Welcome text -->
+    <div class="flex flex-col justify-center space-y-6 w-full lg:w-1/2 text-left text-gray-900">
+      <h1 class="text-5xl font-bold leading-tight text-gray-800">Your Personal Digital Note Block</h1>
+      <p class="text-lg text-gray-700">Effortlessly organize and manage your ideas and thoughts anytime, anywhere.</p>
+    </div>
+    <!-- Image on the right -->
+    <div class="w-full lg:w-1/2 mt-8 lg:mt-0">
+      <img src="https://collegeinfogeek.com/wp-content/uploads/2020/01/best-note-taking-apps-for-ipad-featured.jpg" alt="Note Block" class="w-full h-full object-cover rounded-lg shadow-xl transform hover:scale-110 transition duration-500">
+    </div>
+  </section>
+
+  <!-- Buttons Section -->
+  <main class="flex flex-col items-center justify-center py-16 space-y-16">
+    <div class="grid grid-cols-3 gap-8 w-full max-w-4xl">
+      <!-- Add Button -->
+      <div class="text-center p-6 bg-white shadow-lg rounded-lg">
+        <button class="w-full bg-gray-200 text-gray-800 py-3 rounded-lg text-lg hover:bg-gray-300 transition duration-300">
+          <a href="index.html">Add</a>
+        </button>
+        <p class="mt-4 text-gray-600 text-sm">
+          Create a new note to organize your thoughts and ideas.
+        </p>
+        <img src="https://cdn-icons-png.flaticon.com/512/1828/1828925.png" alt="New Add Icon" class="h-16 w-16 mx-auto mt-4">
+      </div>
+
+      <!-- Edit Button -->
+      <div class="text-center p-6 bg-white shadow-lg rounded-lg">
+        <button class="w-full bg-gray-200 text-gray-800 py-3 rounded-lg text-lg hover:bg-gray-300 transition duration-300">
+          Edit
+        </button>
+        <p class="mt-4 text-gray-600 text-sm">
+          Update an existing note to refine your ideas.
+        </p>
+        <img src="https://cdn-icons-png.flaticon.com/512/1160/1160515.png" alt="Edit Icon" class="h-16 w-16 mx-auto mt-4">
+      </div>
+
+      <!-- Delete Button -->
+      <div class="text-center p-6 bg-white shadow-lg rounded-lg">
+        <button class="w-full bg-gray-200 text-gray-800 py-3 rounded-lg text-lg hover:bg-gray-300 transition duration-300">
+          Delete
+        </button>
+        <p class="mt-4 text-gray-600 text-sm">
+          Remove notes that you no longer need.
+        </p>
+        <img src="https://cdn-icons-png.flaticon.com/512/1214/1214428.png" alt="Delete Icon" class="h-16 w-16 mx-auto mt-4">
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white py-4 text-center">
+    <p>&copy; 2025 Web Note | All rights reserved</p>
+  </footer>
+
+</body>
+</html>
+
