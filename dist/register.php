@@ -42,7 +42,7 @@ if (isset($_POST['signIn'])) {
         if (password_verify($password, $hashedPassword)) {
             session_start();
             $_SESSION['email'] = $row['email'];
-            header("Location: homepage.php");
+            header("Location: home.php");
             exit();
         } else {
             echo "Incorrect Email or Password!";
