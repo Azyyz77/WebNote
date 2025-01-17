@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-include("connect.php");
+require_once("connect.php");
 
 // Check if user is logged in
 if (!isset($_SESSION['email'])) {
@@ -19,12 +19,15 @@ $sql = "INSERT INTO notes (user_email, title, content) VALUES (?, ?, ?)";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("sss", $user_email, $title, $content);
 
+
 if ($stmt->execute()) {
-    echo "Note saved successfully!";
+    header("Location: createnote.php");
+    exit();
 } else {
     echo "Error saving note: " . $stmt->error;
 }
 
 $stmt->close();
 $conn->close();
+
 ?>

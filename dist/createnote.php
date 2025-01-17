@@ -1,6 +1,6 @@
 <?php
 session_start();
-include("connect.php");
+require_once("connect.php");
 
 // Check if user is logged in
 if (!isset($_SESSION['email'])) {
@@ -30,7 +30,7 @@ if (!isset($_SESSION['email'])) {
 <body class="bg-yellow-50 text-gray-800 overflow-hidden">
 
 <!-- Navbar -->
-  <nav class="bg-gray-600 text-white py-4 px-8 flex justify-between items-center shadow-md">
+  <nav class="bg-gray-800 text-white py-4 px-6 shadow-md flex justify-between items-center ">
     <!-- Logo or Title -->
     <div class="flex items-center space-x-4">
       <img src="https://static.vecteezy.com/system/resources/previews/010/760/390/large_2x/wn-logo-w-n-design-white-wn-letter-wn-letter-logo-design-initial-letter-wn-linked-circle-uppercase-monogram-logo-vector.jpg" 
@@ -46,7 +46,7 @@ if (!isset($_SESSION['email'])) {
     <ul class="flex space-x-6">
       <li><a href="home.php" class="hover:text-yellow-400 text-white ">Home</a></li>
       <li><a href="createnote.php" class="hover:text-yellow-400 text-white">Create Notes</a></li>
-      <li><a href="viewnote.html" class="hover:text-yellow-400 text-white">View Notes</a></li>
+      <li><a href="view_note.php" class="hover:text-yellow-400 text-white">View Notes</a></li>
       <li><a href="about.html" class="hover:text-yellow-400 text-white ">About</a></li>
     </ul>
  
@@ -81,7 +81,7 @@ if (!isset($_SESSION['email'])) {
     <div class="flex flex-col items-center space-y-4 text-white">
         <a href="home.php" class="hover:text-yellow-400 text-white ">Home</a>
         <a href="createnote.php" class="hover:text-yellow-400 text-white">Create Notes</a>
-        <a href="view.html" class="hover:text-yellow-400 text-white">View Notes</a>
+        <a href="view_note.php" class="hover:text-yellow-400 text-white">View Notes</a>
         <a href="about.html" class="hover:text-yellow-400 text-white ">About</a>
         <a href="logout.php" class="text-white hover:text-yellow-600 transition duration-200 transform hover:scale-110">
     <!-- Better Logout Icon -->
@@ -96,10 +96,10 @@ if (!isset($_SESSION['email'])) {
 <!-- Main Content -->
 <div class="flex flex-col md:flex-row min-h-screen pt-10">
     <div class="flex-1 p-6 bg-white rounded-lg shadow-lg relative mb-8 md:mb-0" id="editor-container">
-        <form action="save_note.php" method="POST">
-            <input name="title" type="text" placeholder="Titre de la note" class="w-full p-4 mb-3 text-2xl font-medium text-gray-900 border-b-2 border-yellow-300 focus:outline-none bg-yellow-100" id="note-title" />
+        <form id="create-note-form" action="save_note.php" method="POST">
+            <input name="title" type="text" required placeholder="Titre de la note" class="w-full p-4 mb-3 text-2xl font-medium text-gray-900 border-b-2 border-yellow-300 focus:outline-none bg-yellow-100" id="note-title" />
 
-            <textarea name="content" placeholder="Commencez à écrire votre note ici..." class="w-full h-32 md:h-96 p-4 text-lg text-gray-700 border rounded-lg focus:outline-none resize-none bg-yellow-50" id="editor"></textarea>
+            <textarea name="content" required placeholder="Commencez à écrire votre note ici..." class="w-full h-32 md:h-96 p-4 text-lg text-gray-700 border rounded-lg focus:outline-none resize-none bg-yellow-50" id="editor"></textarea>
 
             <button type="submit" id="save-btn" class="mt-4 bg-yellow-300 hover:bg-yellow-600 text-white py-2 px-4 rounded-lg transition duration-200">
                 Enregistrer
@@ -130,17 +130,12 @@ if (!isset($_SESSION['email'])) {
                 <option value="title-desc" <?php echo (isset($_GET['sort']) && $_GET['sort'] == 'title-desc') ? 'selected' : ''; ?>>Title (Z-A)</option>
             </select>
         </form>
-
-
-
         <?php
         // Display notes here
         include("display_notes.php");
         ?>
     </div>
 </div>
-
-
 
 
 <script>
@@ -164,52 +159,6 @@ if (!isset($_SESSION['email'])) {
             mobileMenuOverlay.classList.add('hidden');
         }
     });
-    
-    // Toggle fullscreen mode when the fullscreen button is clicked
-    function sortNotes(criteria) {
-            let sortedNotes;
-            switch (criteria) {
-                case 'date-desc':
-                    sortedNotes = [...notes].sort((a, b) => b.date - a.date);
-                    break;
-                case 'date-asc':
-                    sortedNotes = [...notes].sort((a, b) => a.date - b.date);
-                    break;
-                case 'alpha-asc':
-                    sortedNotes = [...notes].sort((a, b) => a.title.localeCompare(b.title));
-                    break;
-                case 'alpha-desc':
-                    sortedNotes = [...notes].sort((a, b) => b.title.localeCompare(a.title));
-                    break;
-                default:
-                    sortedNotes = notes;
-                    break;
-            }
-            displayNotes(sortedNotes);
-        }
-
-        const sortOptions = document.getElementById('sort-options');
-        sortOptions.addEventListener('change', (e) => {
-            sortNotes(e.target.value);
-        });
-
-        const fullscreenBtn = document.getElementById('fullscreen-btn');
-        const editorContainer = document.getElementById('editor-container');
-        const fullscreenIconPath = document.getElementById('fullscreen-icon-path');
-
-        function toggleFullscreen() {
-            if (!document.fullscreenElement) {
-                editorContainer.requestFullscreen?.() || editorContainer.mozRequestFullScreen?.() || 
-                editorContainer.webkitRequestFullscreen?.() || editorContainer.msRequestFullscreen?.();
-                fullscreenIconPath.setAttribute('d', 'M5 3v4a2 2 0 002 2h4m8 10v4a2 2 0 01-2 2h-4m-2 4h4a2 2 0 002-2v-4m-8 4H6a2 2 0 01-2-2v-4');
-            } else {
-                document.exitFullscreen?.() || document.mozCancelFullScreen?.() || 
-                document.webkitExitFullscreen?.() || document.msExitFullscreen?.();
-                fullscreenIconPath.setAttribute('d', 'M6 9V5a2 2 0 012-2h4m8 10v4a2 2 0 01-2 2h-4m-2 4h4a2 2 0 002-2v-4');
-            }
-        }
-
-        fullscreenBtn.addEventListener('click', toggleFullscreen);
 </script>
 
 </body>

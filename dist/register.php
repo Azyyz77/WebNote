@@ -1,6 +1,6 @@
 <?php 
 
-include 'connect.php';
+require_once("connect.php");
 
 if (isset($_POST['signUp'])) {
     $firstName = $_POST['fName'];
