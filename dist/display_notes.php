@@ -1,6 +1,6 @@
 <?php
 
-include("connect.php");
+require_once("connect.php");
 
 // Check if user is logged in
 if (!isset($_SESSION['email'])) {
@@ -44,11 +44,14 @@ if ($result->num_rows > 0) {
         echo "<div class='note-item'>";
         echo "<h3 class='note-title'>" . htmlspecialchars($row['title']) . "</h3>";
         echo "<p class='note-content'>" . htmlspecialchars($row['content']) . "</p>";
+
+  
         echo "</div>";
     }
 } else {
     echo "<p class='no-notes'>No notes found.</p>";
 }
+
 
 $stmt->close();
 $conn->close();

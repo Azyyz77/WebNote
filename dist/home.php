@@ -1,6 +1,6 @@
 <?php
 session_start();
-include("connect.php");
+require_once("connect.php");
 
 // Check if user is logged in
 if (!isset($_SESSION['email'])) {
@@ -22,7 +22,7 @@ if (!isset($_SESSION['email'])) {
 
 
   <!-- Navigation Bar -->
-  <nav class="bg-gray-600 text-white py-4 px-8 flex justify-between items-center shadow-md">
+  <nav class="bg-gray-800 text-white py-4 px-6 shadow-md flex justify-between items-center ">
     <!-- Logo or Title -->
     <div class="flex items-center space-x-4">
       <img src="https://static.vecteezy.com/system/resources/previews/010/760/390/large_2x/wn-logo-w-n-design-white-wn-letter-wn-letter-logo-design-initial-letter-wn-linked-circle-uppercase-monogram-logo-vector.jpg" 
@@ -37,7 +37,7 @@ if (!isset($_SESSION['email'])) {
       <ul class="flex space-x-6">
         <li><a href="home.php" class="hover:text-yellow-400 text-white ">Home</a></li>
         <li><a href="createnote.php" class="hover:text-yellow-400 text-white">Create Notes</a></li>
-        <li><a href="viewnote.html" class="hover:text-yellow-400 text-white">View Notes</a></li>
+        <li><a href="view_note.php" class="hover:text-yellow-400 text-white">View Notes</a></li>
         <li><a href="about.html" class="hover:text-yellow-400 text-white ">About</a></li>
       </ul>
       <!-- Logout Icon -->
@@ -64,7 +64,7 @@ if (!isset($_SESSION['email'])) {
     <div class="flex flex-col items-center space-y-4 text-white">
         <a href="home.php" class="hover:text-yellow-400 text-white ">Home</a>
         <a href="createnote.php" class="hover:text-yellow-400 text-white">Create Notes</a>
-        <a href="viewnote.html" class="hover:text-yellow-400 text-white">View Notes</a>
+        <a href="view_note.php" class="hover:text-yellow-400 text-white">View Notes</a>
         <a href="about.html" class="hover:text-yellow-400 text-white ">About</a>
         <a href="logout.php" class="text-white hover:text-yellow-600 transition duration-200 transform hover:scale-110">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
