@@ -63,7 +63,7 @@ try {
         $updateStmt->bind_param("ssis", $title, $content, $noteId, $email);
         $updateStmt->execute();
         $updateStmt->close();
-        header("Location: view_note.php");
+        header("Location: view_note.php?id=$noteId");
         exit();
     }
 } catch (Exception $e) {
@@ -118,7 +118,7 @@ try {
         }
     </style>
 </head>
-<body class="bg-gray-100 text-gray-800">
+<body class="bg-yellow-100 text-gray-800 ">
     <!-- Navbar -->
   <nav class="bg-gray-800 text-white py-4 px-6 shadow-md flex justify-between items-center ">
         <!-- Logo or Title -->
@@ -170,7 +170,7 @@ try {
         <a href="view.html" class="hover:text-yellow-400 text-white">View Notes</a>
         <a href="about.html" class="hover:text-yellow-400 text-white ">About</a>
         <a href="logout.php" class="text-white hover:text-yellow-600 transition duration-200 transform hover:scale-110">
-    <!-- Better Logout Icon -->
+    <!-- Logout Icon -->
         <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
             <path d="M16.75 21h-9.5A3.25 3.25 0 0 1 4 17.75v-11.5A3.25 3.25 0 0 1 7.25 3h9.5A3.25 3.25 0 0 1 20 6.25v2.5a.75.75 0 0 1-1.5 0v-2.5c0-.966-.784-1.75-1.75-1.75h-9.5c-.966 0-1.75.784-1.75 1.75v11.5c0 .966.784 1.75 1.75 1.75h9.5c.966 0 1.75-.784 1.75-1.75v-2.5a.75.75 0 0 1 1.5 0v2.5A3.25 3.25 0 0 1 16.75 21ZM15.28 14.53a.75.75 0 0 0 0-1.06l-2.72-2.72h8.69a.75.75 0 0 0 0-1.5h-8.69l2.72-2.72a.75.75 0 0 0-1.06-1.06l-4 4a.75.75 0 0 0 0 1.06l4 4a.75.75 0 0 0 1.06 0Z"/>
         </svg>
@@ -200,10 +200,10 @@ try {
     <?php else: ?>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <?php foreach ($notes as $note): ?>
-                <div class="note-card">
+                <div class="note-card bg-gray-50" id="note-<?= $note['id'] ?>">
                     <form method="POST">
                         <input type="hidden" name="note_id" value="<?= $note['id'] ?>">
-                        <div>
+                        <div class="mb-2">
                             <input type="text" name="title" value="<?= htmlspecialchars($note['title']) ?>" class="note-title w-full border rounded p-1">
                         </div>
                         <div>
@@ -243,5 +243,28 @@ try {
         }
     });
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Get the 'id' parameter from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const noteId = urlParams.get('id'); // Example: '5'
+
+        if (noteId) {
+            // Find the note element with the corresponding ID
+            const noteElement = document.getElementById(`note-${noteId}`);
+            if (noteElement) {
+                // Scroll the element into view
+                noteElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                // Optionally highlight the note for better visibility
+                noteElement.style.backgroundColor = 'gray'; // Light yellow highlight
+                setTimeout(() => {
+                    noteElement.style.backgroundColor = ''; // Remove highlight after 2 seconds
+                }, 2000);
+            }
+        }
+    });
+</script>
+
 </body>
 </html>

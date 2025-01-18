@@ -41,12 +41,12 @@ $result = $stmt->get_result();
 
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        echo "<div class='note-item'>";
+        echo "<a href='view_note.php?id=" . $row['id'] . "'>";
+        echo "<div class='note-item' id='note-" . $row['id'] . "'>";
         echo "<h3 class='note-title'>" . htmlspecialchars($row['title']) . "</h3>";
         echo "<p class='note-content'>" . htmlspecialchars($row['content']) . "</p>";
-
-  
         echo "</div>";
+        echo "</a>";
     }
 } else {
     echo "<p class='no-notes'>No notes found.</p>";
@@ -121,5 +121,9 @@ $conn->close();
 
     </style>
 </head>
+<body>
+
+
+</body>
 
 </html>

@@ -21,14 +21,10 @@ if (!isset($_SESSION['email'])) {
             overflow-y: auto; /* Allow scrolling on the entire page */
             margin-bottom: 40px;
         }
-
-        
     </style>
-
 </head>
 
-<body class="bg-yellow-50 text-gray-800 overflow-hidden">
-
+<body class="bg-yellow-100 text-gray-800 overflow-hidden">
 <!-- Navbar -->
   <nav class="bg-gray-800 text-white py-4 px-6 shadow-md flex justify-between items-center ">
     <!-- Logo or Title -->
@@ -38,9 +34,6 @@ if (!isset($_SESSION['email'])) {
            class="w-12 h-12 rounded-full">
       <h1 class="text-xl font-bold">Web Note</h1>
     </div>
-
-    
-
    <!-- Desktop Menu -->
     <div class="hidden md:flex items-center space-x-6">
     <ul class="flex space-x-6">
@@ -48,9 +41,7 @@ if (!isset($_SESSION['email'])) {
       <li><a href="createnote.php" class="hover:text-yellow-400 text-white">Create Notes</a></li>
       <li><a href="view_note.php" class="hover:text-yellow-400 text-white">View Notes</a></li>
       <li><a href="about.html" class="hover:text-yellow-400 text-white ">About</a></li>
-    </ul>
- 
-    
+    </ul>   
     <!-- Logout Icon (Heroicons Door Icon) -->
     <a href="logout.php" class="text-white hover:text-yellow-600 transition duration-200 transform hover:scale-110">
     <!-- Better Logout Icon -->
@@ -58,11 +49,7 @@ if (!isset($_SESSION['email'])) {
             <path d="M16.75 21h-9.5A3.25 3.25 0 0 1 4 17.75v-11.5A3.25 3.25 0 0 1 7.25 3h9.5A3.25 3.25 0 0 1 20 6.25v2.5a.75.75 0 0 1-1.5 0v-2.5c0-.966-.784-1.75-1.75-1.75h-9.5c-.966 0-1.75.784-1.75 1.75v11.5c0 .966.784 1.75 1.75 1.75h9.5c.966 0 1.75-.784 1.75-1.75v-2.5a.75.75 0 0 1 1.5 0v2.5A3.25 3.25 0 0 1 16.75 21ZM15.28 14.53a.75.75 0 0 0 0-1.06l-2.72-2.72h8.69a.75.75 0 0 0 0-1.5h-8.69l2.72-2.72a.75.75 0 0 0-1.06-1.06l-4 4a.75.75 0 0 0 0 1.06l4 4a.75.75 0 0 0 1.06 0Z"/>
         </svg>
     </a>
-
-
     </div>
-    
-
 
 
     <!-- Mobile Hamburger Menu Button -->
@@ -71,7 +58,6 @@ if (!isset($_SESSION['email'])) {
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
         </svg>
     </button>
-</nav>
 
 <!-- Mobile Menu -->
 <div class="md:hidden fixed inset-0 bg-black bg-opacity-50 z-20 hidden" id="mobile-menu-overlay">
@@ -97,9 +83,9 @@ if (!isset($_SESSION['email'])) {
 <div class="flex flex-col md:flex-row min-h-screen pt-10">
     <div class="flex-1 p-6 bg-white rounded-lg shadow-lg relative mb-8 md:mb-0" id="editor-container">
         <form id="create-note-form" action="save_note.php" method="POST">
-            <input name="title" type="text" required placeholder="Titre de la note" class="w-full p-4 mb-3 text-2xl font-medium text-gray-900 border-b-2 border-yellow-300 focus:outline-none bg-yellow-100" id="note-title" />
+            <input name="title" type="text" required placeholder="Note Title" class="w-full p-4 mb-3 text-2xl font-medium text-gray-900 border-b-2 border-yellow-300 focus:outline-none bg-yellow-100" id="note-title" />
 
-            <textarea name="content" required placeholder="Commencez à écrire votre note ici..." class="w-full h-32 md:h-96 p-4 text-lg text-gray-700 border rounded-lg focus:outline-none resize-none bg-yellow-50" id="editor"></textarea>
+            <textarea name="content" required placeholder="Write your note here..." class="w-full h-32 md:h-96 p-4 text-lg text-gray-700 border rounded-lg focus:outline-none resize-none bg-yellow-50" id="editor"></textarea>
 
             <button type="submit" id="save-btn" class="mt-4 bg-yellow-300 hover:bg-yellow-600 text-white py-2 px-4 rounded-lg transition duration-200">
                 Enregistrer
@@ -113,11 +99,23 @@ if (!isset($_SESSION['email'])) {
     </div>
 
 
-    <div class="w-full md:w-[450px] bg-yellow-50 text-gray-900 p-6 flex flex-col rounded-lg shadow-lg">
-        <input type="text" placeholder="Rechercher une note" class="p-3 mb-4 rounded-lg bg-white text-gray-700 focus:outline-none" />
-
+    <div class="w-full md:w-[450px] bg-yellow-100 text-gray-900 p-6 flex flex-col rounded-lg shadow-lg">
+    <div class="flex items-center p-3 mb-4 rounded-lg bg-white text-gray-700 border border-gray-300">
+    <form method="GET" action="search_notes.php" class="flex items-center w-full">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M10 18a8 8 0 100-16 8 8 0 000 16z" />
+        </svg>
+        <input 
+            type="text" 
+            name="query" 
+            placeholder="Search for a note" 
+            class="w-full focus:outline-none" 
+            required
+        />
+        <button type="submit" class="hidden"></button>
+    </form>
+    </div>
         <hr class="border-yellow-300 mb-4" />
-
         <h2 class="text-2xl font-medium mb-6 text-gray-800">My Notes</h2>
         <div class="notes-list">
         </div>
@@ -160,6 +158,5 @@ if (!isset($_SESSION['email'])) {
         }
     });
 </script>
-
 </body>
 </html>
