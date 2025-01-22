@@ -9,6 +9,7 @@
     <title>Login</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="style_4.css">
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
 </head>
 <body class="bg-yellow-100 text-gray-800 overflow-hidden">
 <div class="layout">
@@ -27,9 +28,8 @@
             <h3><?php echo $_SESSION['login_status']; ?></h3>
             <?php unset($_SESSION['login_status']); ?>
         <?php } ?>
-          
         </div>
-        <form method="post" action="register.php">
+        <form method="post" action="register.php" onsubmit="return validatePassword();">
           <div class="input-group">
               <i class="fas fa-envelope"></i>
               <input type="email" name="email" id="email" placeholder="Email" required>
@@ -38,6 +38,7 @@
               <i class="fas fa-lock"></i>
               <input type="password" name="password" id="password" placeholder="Password" required>
           </div>
+          <small id="passwordError" style="color: red; display: none;">Password must be at least 8 characters , 1 Uppercase Letter, 1 Number and 1 Special character.</small>
           <div class="work">
             <?php if(isset($_SESSION['login_work'])) { ?>
               <h3><?php echo $_SESSION['login_work']; ?></h3>
@@ -49,12 +50,33 @@
           </p>
          <input type="submit" class="btn" value="Sign In" name="signIn">
         </form>
-        
         <div class="links">
           <p>Don't have an account yet?</p>
           <a href="sign_up.php">Sign Up</a>
         </div>
       </div>
-</div>
+      <script>
+        function validatePassword() {
+            const password = document.getElementById('password').value;
+            const passwordError = document.getElementById('passwordError');
+            const strongPassword = /^(?=.*[A-Z])(?=.*\d)(?=.*[?!@#$%^&.*])[A-Za-z\d!@#$%^&*.?]{8,}$/;
+
+            if (!strongPassword.test(password)) {
+                passwordError.style.display = 'block';
+                return false;
+            }
+            passwordError.style.display = 'none';
+            return true;
+        }
+
+        window.fbAsyncInit = function() {
+            FB.init({
+                appId: '1405888717066387',
+                cookie: true,
+                xfbml: true,
+                version: 'v16.0'
+            });
+        };
+      </script>
 </body>
 </html>
