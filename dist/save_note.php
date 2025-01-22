@@ -5,7 +5,7 @@ require_once("connect.php");
 
 // Check if user is logged in
 if (!isset($_SESSION['email'])) {
-    header("Location: index.php");
+    header("Location: Login.php");
     exit();
 }
 
