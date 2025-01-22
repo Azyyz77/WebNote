@@ -13,8 +13,8 @@ require_once("connect.php");
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-yellow-100 flex justify-center items-center h-screen">
-    <div class="bg-white p-8 rounded-lg shadow-lg max-w-md w-full border border-yellow-400">
-        <h1 class="text-3xl font-semibold text-yellow-500 mb-6 text-center">Reset Password</h1>
+    <div class="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
+        <h1 class="text-3xl font-semibold text-black mb-6 text-center">Reset Password</h1>
         
         <form method="post" action="reset_password_code.php">
             <?php if(isset($_SESSION['message'])) { ?>
@@ -24,9 +24,10 @@ require_once("connect.php");
                 <?php unset($_SESSION['message']); ?>
             <?php } ?>
             
-            <input type="email" name="email" placeholder="Enter your email" required class="w-full p-3 mb-4 border border-yellow-400 rounded-md focus:ring-2 focus:ring-yellow-300 focus:outline-none" />
+            <!-- Champ de saisie d'email avec bordure qui change au focus -->
+            <input type="email" name="email" placeholder="Enter your email" required class="w-full p-3 mb-4 border border-transparent rounded-md focus:border-yellow-400 focus:outline-none" />
             
-            <button type="submit" name="sendResetLink" class="w-full py-3 bg-yellow-500 text-white font-semibold rounded-md hover:bg-yellow-400 transition duration-300 ease-in-out">
+            <button type="submit" name="sendResetLink" class="w-full py-3 bg-yellow-500 text-white font-semibold rounded-md hover:bg-yellow-400 active:bg-yellow-600 transition duration-300 ease-in-out">
                 Send Reset Link
             </button>
         </form>
