@@ -31,7 +31,11 @@ function send_password_reset($get_name, $get_email, $token){
     $mail->Subject = "Reset Password Notification"; 
 
     $email_template = "<h3><b>You are receiving this email because we received a password reset request for your account.</b></h3>
+
+    <a href='http://localhost/WebNote/dist/change_password.php?token=$token&email=$get_email'>Click Me</a>";
+
     <a href='http://localhost/stage/WebNote/dist/change_password.php?token=$token&email=$get_email'>Click Me</a>";
+
 
     $mail->Body = $email_template;
     $mail->send();
