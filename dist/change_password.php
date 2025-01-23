@@ -30,7 +30,8 @@ require_once("connect.php");
 <body class="bg-yellow-100 flex items-center justify-center min-h-screen">
     <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md animate-fade-in">
         <h2 class="text-2xl font-bold text-black mb-6 text-center">Change Password</h2>
-        <form action="reset_password_code.php" method="post">
+
+        <form action="reset_password_code.php" method="post" onsubmit="return validatePassword();">
             <?php if(isset($_SESSION['message'])) { ?>
                 <div class="mb-4 text-green-600 font-semibold text-center">
                     <?php echo $_SESSION['message']; ?>
@@ -58,6 +59,7 @@ require_once("connect.php");
                     placeholder="Enter new password" 
                     required>
             </div>
+            <small id="passwordError" style="color: red; display: none;">Password must be at least 8 characters , 1 Uppercase Letter, 1 Number and 1 Special character.</small>
             <div class="mb-4">
                 <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-2">Confirm New Password</label>
                 <input 
@@ -76,5 +78,19 @@ require_once("connect.php");
             </button>
         </form>
     </div>
+    <script>
+        function validatePassword() {
+        const password = document.getElementById('newPassword').value;
+        const passwordError = document.getElementById('passwordError');
+        const strongPassword = /^(?=.*[A-Z])(?=.*\d)(?=.*[?!@#$%^&.*])[A-Za-z\d?!@#$%.^&*]{8,}$/;
+
+        if (!strongPassword.test(password)) {
+            passwordError.style.display = 'block';
+            return false;
+        }
+        passwordError.style.display = 'none';
+        return true;
+    }
+    </script>
 </body>
 </html>

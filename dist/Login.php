@@ -38,7 +38,7 @@
               <i class="fas fa-lock"></i>
               <input type="password" name="password" id="password" placeholder="Password" required>
           </div>
-          <small id="passwordError" style="color: red; display: none;">Password must be at least 8 characters , 1 Uppercase Letter, 1 Number and 1 Special character.</small>
+
           <div class="work">
             <?php if(isset($_SESSION['login_work'])) { ?>
               <h3><?php echo $_SESSION['login_work']; ?></h3>
@@ -55,28 +55,6 @@
           <a href="sign_up.php">Sign Up</a>
         </div>
       </div>
-      <script>
-        function validatePassword() {
-            const password = document.getElementById('password').value;
-            const passwordError = document.getElementById('passwordError');
-            const strongPassword = /^(?=.*[A-Z])(?=.*\d)(?=.*[?!@#$%^&.*])[A-Za-z\d!@#$%^&*.?]{8,}$/;
-
-            if (!strongPassword.test(password)) {
-                passwordError.style.display = 'block';
-                return false;
-            }
-            passwordError.style.display = 'none';
-            return true;
-        }
-
-        window.fbAsyncInit = function() {
-            FB.init({
-                appId: '1405888717066387',
-                cookie: true,
-                xfbml: true,
-                version: 'v16.0'
-            });
-        };
-      </script>
+      
 </body>
 </html>

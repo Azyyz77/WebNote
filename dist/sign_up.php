@@ -46,6 +46,12 @@
                     <input type="password" name="password" id="password" placeholder="Password" required>
                 </div>
                 <small id="passwordError" style="color: red; display: none;">Password must be at least 8 characters , 1 Uppercase Letter, 1 Number and 1 Special character.</small>
+                <div class="work">
+                <?php if(isset($_SESSION['signup_work'])) { ?>
+                    <h3><?php echo $_SESSION['signup_work']; ?></h3>
+                    <?php unset($_SESSION['signup_work']); ?>
+                <?php } ?>
+            </div>
                 <input type="submit" class="btn" value="Sign Up" name="signUp">
             </form>
             

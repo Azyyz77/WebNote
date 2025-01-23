@@ -33,7 +33,7 @@ function sendemail_verify($firstName,$email,$verify_token)
     
         $email_template = "<h1>b>You have Registred to WebNote with this email</h1>
         <h3>Verify your email address to Login with click the below given link</h3>
-        <a href='http://localhost/WebNote/dist/verify_email.php?token=$verify_token&email=$email'>Click Me</a>";
+        <a href='http://localhost/stage_project/webNote/dist/verify_email.php?token=$verify_token&email=$email'>Click Me</a>";
     
         $mail->Body = $email_template;
         $mail->send();
