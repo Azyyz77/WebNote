@@ -2,11 +2,7 @@
 session_start();
 require_once("connect.php");
 
-// Check if the user is logged in
-if (!isset($_SESSION['email'])) {
-  header("Location: sign_up.php"); // Redirect to sign-up/login page if not logged in
-  exit();
-}
+
 
 // Check if user is logged in
 if (!isset($_SESSION['email'])) {

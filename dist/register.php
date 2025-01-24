@@ -14,7 +14,6 @@ function sendemail_verify($firstName,$email,$verify_token)
     try {
         $mail = new PHPMailer(true);
         //Server settings
-    
         $mail->isSMTP();                                            //Send using SMTP
         $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
         $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
@@ -49,6 +48,10 @@ if (isset($_POST['signUp'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
     $verify_token = bin2hex(random_bytes(32));
+    
+    // Set the expiration time (5 minutes from now)
+    $verify_token_expiration = date('Y-m-d H:i:s', time() + 300); // 300 seconds = 5 minutes
+    
     // Use password_hash for secure password storage
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
@@ -60,11 +63,11 @@ if (isset($_POST['signUp'])) {
         header("location:sign_up.php");
         exit();
     } else {
-        $insertQuery = "INSERT INTO users (firstName, lastName, email, password,verify_token)
-                        VALUES ('$firstName', '$lastName', '$email', '$hashedPassword','$verify_token')";
+        $insertQuery = "INSERT INTO users (firstName, lastName, email, password, verify_token, verify_token_expiration)
+                        VALUES ('$firstName', '$lastName', '$email', '$hashedPassword', '$verify_token', '$verify_token_expiration')";
         if ($conn->query($insertQuery) === TRUE) {
-            sendemail_verify("$firstName","$email","$verify_token");
-            $_SESSION['signup_work'] = '<i class="fas fa-check-circle"></i>'."Registration Successfull. Please verify your Email Address.";
+            sendemail_verify("$firstName", "$email", "$verify_token");
+            $_SESSION['signup_work'] = '<i class="fas fa-check-circle"></i>'."Registration Successful. Please verify your Email Address.";
             header("location:sign_up.php");
             exit();
         } else {
@@ -89,10 +92,19 @@ if (isset($_POST['signIn'])) {
         
         // Use password_verify to check password
         if (password_verify($password, $hashedPassword) && $verify_token == "1" ) {
-            session_start();
-            $_SESSION['email'] = $row['email'];
-            header("Location: home.php");
-            exit();
+            if($role == "user"){
+                session_start();
+                $_SESSION['email'] = $row['email'];
+                header("Location: home.php");
+                exit();
+            }
+            else{
+                session_start();
+                $_SESSION['email'] = $row['email'];
+                $_SESSION['role'] = $row['role'];
+                header("Location: admin.php");
+                exit();
+            }
         } else {
             if ($verify_token == "0") {
                 $_SESSION['login_status'] = '<i class="fas fa-exclamation-circle"></i>'."Your Email Address is not Verified. Please Verify your Email Address.";

@@ -46,15 +46,17 @@ function send_password_reset($get_name, $get_email, $token){
 if (isset($_POST['sendResetLink'])) {
     $email = mysqli_real_escape_string($conn,$_POST['email']);
     $token = bin2hex(random_bytes(32)); // Generates a secure 64-character token
+    $expiration = date('Y-m-d H:i:s', strtotime('+5 minutes')); // Set expiration time
 
     $check_email = "SELECT * from users where email='$email' Limit 1";
-    $result = $conn->query($check_email);;
+    $result = $conn->query($check_email);
+
     if($result->num_rows > 0){
         $row = mysqli_fetch_array($result);
         $get_name = $row['firstName'];
         $get_email = $row['email'];
 
-        $update_token="UPDATE users SET verify_token='$token' WHERE email='$get_email' limit 1";
+        $update_token = "UPDATE users SET verify_token='$token', token_expiration='$expiration' WHERE email='$get_email' LIMIT 1";
         $update_token_run = mysqli_query($conn, $update_token);
 
         if($update_token_run){
@@ -62,9 +64,6 @@ if (isset($_POST['sendResetLink'])) {
             $_SESSION['message'] = "Password reset link has been sent to your email. Please check your inbox.";
             header("location: reset_password.php");
             exit();
-
-
-
         }
     }else{
         $_SESSION['status'] = "No user found with this email address.";
@@ -80,9 +79,17 @@ if(isset($_POST['password_update'])){
 
     if(!empty($token) ){
         if(!empty($email) && !empty($new_password) && !empty($confirm_password)){
-            $check_token = "SELECT verify_token from users where verify_token='$token' Limit 1";
+            $current_time = date('Y-m-d H:i:s');
+            $check_token = "SELECT verify_token, token_expiration FROM users WHERE verify_token='$token' LIMIT 1";
             $result = $conn->query($check_token);
+
             if($result->num_rows > 0){
+                $row = mysqli_fetch_array($result);
+                if (strtotime($current_time) > strtotime($row['token_expiration'])) {
+                    $_SESSION['message'] = "This reset password link has expired.";
+                    header("location: reset_password.php");
+                    exit();
+                }
                 if($new_password === $confirm_password){
                     $new_password_hashed = password_hash($new_password, PASSWORD_DEFAULT);
                     $update_password = "UPDATE users SET password='$new_password_hashed' WHERE verify_token='$token' limit 1";

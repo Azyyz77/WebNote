@@ -3,7 +3,7 @@ session_start();
 require_once("connect.php");
 
 // Check if user is logged in
-if (!isset($_SESSION['email'])) {
+if (!isset($_SESSION['email']) ||  $_SESSION['role'] !== 'admin' ) {
     header("Location: Login.php");
     exit();
 }
@@ -27,12 +27,12 @@ if (!isset($_SESSION['email'])) {
 <body class="bg-yellow-100 text-gray-800 overflow-hidden">
 <!-- Navbar -->
     <?php
-        include("navbar.php");
+        include("admin_navbar.php");
     ?>
 <!-- Main Content -->
 <div class="flex flex-col md:flex-row min-h-screen pt-10">
     <div class="flex-1 p-6 bg-white rounded-lg shadow-lg relative mb-8 md:mb-0" id="editor-container">
-        <form id="create-note-form" action="save_note.php" method="POST">
+        <form id="create-note-form" action="admin_savenote.php" method="POST">
             <input name="title" type="text" required placeholder="Note Title" class="w-full p-4 mb-3 text-2xl font-medium text-gray-900 border-b-2 border-yellow-300 focus:outline-none bg-yellow-100" id="note-title" />
 
             <textarea name="content" required placeholder="Write your note here..." class="w-full h-32 md:h-96 p-4 text-lg text-gray-700 border rounded-lg focus:outline-none resize-none bg-yellow-50" id="editor"></textarea>
@@ -80,29 +80,11 @@ if (!isset($_SESSION['email'])) {
         </form>
         <?php
         // Display notes here
-        include("display_notes.php");
+        include("admin_displaynotes.php");
         ?>
     </div>
 </div>
-<script>
-    const fullscreenBtn = document.getElementById('fullscreen-btn');
-        const editorContainer = document.getElementById('editor-container');
-        const fullscreenIconPath = document.getElementById('fullscreen-icon-path');
 
-        function toggleFullscreen() {
-            if (!document.fullscreenElement) {
-                editorContainer.requestFullscreen?.() || editorContainer.mozRequestFullScreen?.() || 
-                editorContainer.webkitRequestFullscreen?.() || editorContainer.msRequestFullscreen?.();
-                fullscreenIconPath.setAttribute('d', 'M5 3v4a2 2 0 002 2h4m8 10v4a2 2 0 01-2 2h-4m-2 4h4a2 2 0 002-2v-4m-8 4H6a2 2 0 01-2-2v-4');
-            } else {
-                document.exitFullscreen?.() || document.mozCancelFullScreen?.() || 
-                document.webkitExitFullscreen?.() || document.msExitFullscreen?.();
-                fullscreenIconPath.setAttribute('d', 'M6 9V5a2 2 0 012-2h4m8 10v4a2 2 0 01-2 2h-4m-2 4h4a2 2 0 002-2v-4');
-            }
-        }
-
-        fullscreenBtn.addEventListener('click', toggleFullscreen);
-</script>
 
 
 </body>
