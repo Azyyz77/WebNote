@@ -66,8 +66,9 @@ if (isset($_POST['sendResetLink'])) {
             exit();
         }
     }else{
-        $_SESSION['status'] = "No user found with this email address.";
-        header("location: reset_password.php");
+        $_SESSION['error'] = "No user found with this email address.";
+        header("location:reset_password.php");
+        exit();
     }
 }
 
@@ -86,44 +87,44 @@ if(isset($_POST['password_update'])){
             if($result->num_rows > 0){
                 $row = mysqli_fetch_array($result);
                 if (strtotime($current_time) > strtotime($row['token_expiration'])) {
-                    $_SESSION['message'] = "This reset password link has expired.";
+                    $_SESSION['error'] = "This reset password link has expired.";
                     header("location: reset_password.php");
                     exit();
                 }
-                if($new_password === $confirm_password){
+                elseif($new_password === $confirm_password){
                     $new_password_hashed = password_hash($new_password, PASSWORD_DEFAULT);
                     $update_password = "UPDATE users SET password='$new_password_hashed' WHERE verify_token='$token' limit 1";
                     $update_password_run = mysqli_query($conn, $update_password);
                     
                     if($update_password_run){
-                        $_SESSION['message'] = "Password has been updated successfully. You can now login.";
+                        $_SESSION['login_work'] = '<i class="fas fa-check-circle"></i>'."Password has been updated successfully. You can now login.";
                         header("location: login.php");
                         exit();
                     }else{
-                        $_SESSION['message'] = "Failed to update password. Please try again.";
+                        $_SESSION['error'] = "Failed to update password. Please try again.";
                         header("location: change_password.php?token=$token&email=$email");
                         exit();
                     }
                 }else{
-                    $_SESSION['message'] = "Passwords do not match.";
+                    $_SESSION['error'] = "Passwords do not match.";
                     header("location: change_password.php?token=$token&email=$email");
                     exit();
 
 
                 }
             }else{
-                $_SESSION['message'] = "Invalid or expired token.";
+                $_SESSION['error'] = "Invalid or expired Link.";
                 header("location: reset_password.php");
                 exit();
             }
         }else{
-            $_SESSION['message'] = "All fields are required.";
+            $_SESSION['error'] = "All fields are required.";
             header("location: change_password.php?token=$token&email=$email");
             exit();
         }
     }
     else{
-        $_SESSION['message'] = "Token is missing. Please try again.";
+        $_SESSION['error'] = "Token is missing. Please try again.";
         header("location: reset_password.php");
         exit();
     }

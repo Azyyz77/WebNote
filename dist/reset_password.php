@@ -11,19 +11,36 @@ require_once("connect.php");
     <title>Forgot Password</title>
     <!-- Ajouter le lien vers Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #eedb92;
+            color: #374151;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+    </style>
 </head>
-<body class="bg-yellow-100 flex justify-center items-center h-screen">
+<body >
     <div class="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
         <h1 class="text-3xl font-semibold text-black mb-6 text-center">Reset Password</h1>
+        <?php if(isset($_SESSION['message'])) { ?>
+                    <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4">
+                        <h3><?php echo $_SESSION['message']; ?></h3>
+                    </div>
+                    <?php unset($_SESSION['message']); ?>
+                <?php } ?>
+                
+                <?php if(isset($_SESSION['error'])) { ?>
+                    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4">
+                        <h3><?php echo $_SESSION['error']; ?></h3>
+                    </div>
+                    <?php unset($_SESSION['error']); ?>
+                <?php } ?>
         
         <form method="post" action="reset_password_code.php">
-            <?php if(isset($_SESSION['message'])) { ?>
-                <div class="mb-4 text-yellow-500 text-center">
-                    <h3><?php echo $_SESSION['message']; ?></h3>
-                </div>
-                <?php unset($_SESSION['message']); ?>
-            <?php } ?>
-            
             <!-- Champ de saisie d'email avec bordure qui change au focus -->
             <input type="email" name="email" placeholder="Enter your email" required class="w-full p-3 mb-4 border border-transparent rounded-md focus:border-yellow-400 focus:outline-none" />
             

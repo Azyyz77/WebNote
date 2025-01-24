@@ -22,12 +22,22 @@
         <!-- Right Section: Sign-Up Form -->
         <div class="container" id="signup">
             <h1 class="form-title">Register</h1>
-            <div class="alert">
+            
                 <?php if(isset($_SESSION['signup_status'])) { ?>
+                    <div class="alert">
                     <h3><?php echo $_SESSION['signup_status']; ?></h3>
+                    </div>
                     <?php unset($_SESSION['signup_status']); ?>
                 <?php } ?>
-            </div>
+            
+            
+                <?php if(isset($_SESSION['signup_work'])) { ?>
+                    <div class="work">
+                        <h3><?php echo $_SESSION['signup_work']; ?></h3>
+                    </div>
+                    <?php unset($_SESSION['signup_work']); ?>
+                <?php } ?>
+            
             <form method="post" action="register.php" onsubmit="return validatePassword();">
                 <div class="input-group">
                     <i class="fas fa-user"></i>
@@ -46,12 +56,7 @@
                     <input type="password" name="password" id="password" placeholder="Password" required>
                 </div>
                 <small id="passwordError" style="color: red; display: none;">Password must be at least 8 characters , 1 Uppercase Letter, 1 Number and 1 Special character.</small>
-                <div class="work">
-                <?php if(isset($_SESSION['signup_work'])) { ?>
-                    <h3><?php echo $_SESSION['signup_work']; ?></h3>
-                    <?php unset($_SESSION['signup_work']); ?>
-                <?php } ?>
-            </div>
+                
                 <input type="submit" class="btn" value="Sign Up" name="signUp">
             </form>
             

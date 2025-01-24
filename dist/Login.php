@@ -23,12 +23,23 @@
   <!-- Right Section: Login Form -->
   <div class="container" id="signIn">
         <h1 class="form-title">Sign In</h1>
-        <div class="alert">
+        
         <?php if(isset($_SESSION['login_status'])) { ?>
+          <div class="alert">
             <h3><?php echo $_SESSION['login_status']; ?></h3>
+            </div>
             <?php unset($_SESSION['login_status']); ?>
         <?php } ?>
-        </div>
+
+        
+            <?php if(isset($_SESSION['login_work'])) { ?>
+              <div class="work">
+              <h3><?php echo $_SESSION['login_work']; ?></h3>
+              </div>
+              <?php unset($_SESSION['login_work']); ?>
+            <?php } ?>
+          
+        
         <form method="post" action="register.php" onsubmit="return validatePassword();">
           <div class="input-group">
               <i class="fas fa-envelope"></i>
@@ -40,12 +51,7 @@
               <input type="password" name="password" id="password" placeholder="Password" required>
           </div>
 
-          <div class="work">
-            <?php if(isset($_SESSION['login_work'])) { ?>
-              <h3><?php echo $_SESSION['login_work']; ?></h3>
-              <?php unset($_SESSION['login_work']); ?>
-            <?php } ?>
-          </div>
+          
           <p class="recover">
             <a href="reset_password.php" class="text-blue-600 hover:underline">Recover Password</a>
           </p>
