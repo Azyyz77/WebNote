@@ -14,6 +14,7 @@ function sendemail_verify($firstName,$email,$verify_token)
     try {
         $mail = new PHPMailer(true);
         //Server settings
+    
         $mail->isSMTP();                                            //Send using SMTP
         $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
         $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
@@ -33,7 +34,7 @@ function sendemail_verify($firstName,$email,$verify_token)
         $email_template = "<h1>b>You have Registred to WebNote with this email</h1>
         <h3>Verify your email address to Login with click the below given link</h3>
         <a href='http://localhost/stage_project/webNote/dist/verify_email.php?token=$verify_token&email=$email'>Click Me</a>";
-    
+        
         $mail->Body = $email_template;
         $mail->send();
         }catch (Exception $e) {
@@ -81,6 +82,7 @@ if (isset($_POST['signUp'])) {
 if (isset($_POST['signIn'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
+    $role = $_POST['role'];
     
     $sql = "SELECT * FROM users WHERE email='$email'";
     $result = $conn->query($sql);
@@ -89,6 +91,7 @@ if (isset($_POST['signIn'])) {
         $row = $result->fetch_assoc();
         $verify_token= $row['verify_status'];
         $hashedPassword = $row['password'];
+        $role = $row['role'];
         
         // Use password_verify to check password
         if (password_verify($password, $hashedPassword) && $verify_token == "1" ) {
@@ -105,6 +108,7 @@ if (isset($_POST['signIn'])) {
                 header("Location: admin.php");
                 exit();
             }
+
         } else {
             if ($verify_token == "0") {
                 $_SESSION['login_status'] = '<i class="fas fa-exclamation-circle"></i>'."Your Email Address is not Verified. Please Verify your Email Address.";
