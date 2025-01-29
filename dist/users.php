@@ -25,11 +25,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['role_user_id'])) {
     $userId = intval($_POST['role_user_id']);
     $newRole = $_POST['new_role'];
-    $newVerifyStatus = $newRole === 'admin' ? 1 : 0;
 
-    $updateQuery = "UPDATE users SET role = ?, verify_status = ? WHERE Id = ?";
+    $updateQuery = "UPDATE users SET role = ? WHERE Id = ?";
     $stmt = $conn->prepare($updateQuery);
-    $stmt->bind_param("sii", $newRole, $newVerifyStatus, $userId);
+    $stmt->bind_param("si", $newRole, $userId);
     if ($stmt->execute()) {
     } else {
         echo "<script>alert('Failed to update role and Verify Status');</script>";
@@ -76,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['role_user_id'])) {
             <td class='border border-gray-400 px-4 py-2'>{$user['verify_status']}</td>
             <td class='border border-gray-400 px-4 py-2'>{$user['role']}</td>
             <td class='border border-gray-400 px-4 py-2'>
-              
+            
               <!-- Form for Delete -->
               <form method='POST' style='display: inline;'>
                 <input type='hidden' name='user_id' value='{$user['Id']}'>
