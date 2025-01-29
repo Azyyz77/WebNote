@@ -75,57 +75,90 @@ try {
 
 // Gestion de la suppression
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
-    $deleteId = $_POST['delete_id'];
+    $deleteId = $_POST['note_id'];
 
-    $stmt = $conn->prepare("DELETE FROM notes WHERE id = ?");
-    $stmt->bind_param("i", $deleteId);
-    $stmt->execute();
-    $stmt->close();
-
+    $deleteQuery = "DELETE FROM notes WHERE id = ?";
+    $deleteStmt = $conn->prepare($deleteQuery);
+    $deleteStmt->bind_param("i", $deleteId);
+    $deleteStmt->execute();
+    $deleteStmt->close();
     header("Location: admin_viewnotes.php");
     exit();
 }
 
 // Gestion de l'édition
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_id'])) {
-    $editId = $_POST['edit_id'];
-    $editTitle = $_POST['edit_title'];
-    $editContent = $_POST['edit_content'];
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_id'])) {
+        $noteId = $_POST['note_id'];
+        $title = $_POST['title'];
+        $content = $_POST['content'];
 
-    $stmt = $conn->prepare("UPDATE notes SET title = ?, content = ? WHERE id = ?");
-    $stmt->bind_param("ssi", $editTitle, $editContent, $editId);
-    $stmt->execute();
-    $stmt->close();
+        $updateQuery = "UPDATE notes SET title = ?, content = ? WHERE id = ? ";
+        $updateStmt = $conn->prepare($updateQuery);
+        $updateStmt->bind_param("ssi", $title, $content, $noteId);
+        $updateStmt->execute();
+        $updateStmt->close();
+        
+        header("Location: admin_viewnotes.php");
+        exit();
+    }
 
-    header("Location: admin_viewnotes.php");
-    exit();
-}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Gestion des Notes</title>
+    <title>Mes Notes - WebNote</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        function showEditForm(id) {
-            const editForm = document.getElementById(`edit-form-${id}`);
-            editForm.style.display = "block";
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.12.0/cdn.min.js"></script>
+    <style>
+        /* Custom CSS for compact notes */
+        .note-card {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
         }
-
-        function hideEditForm(id) {
-            const editForm = document.getElementById(`edit-form-${id}`);
-            editForm.style.display = "none";
+        .note-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
         }
-    </script>
+        .note-title {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #1f2937;
+        }
+        .note-content {
+            font-size: 0.875rem;
+            color: #4b5563;
+            line-height: 1.25rem;
+        }
+        .note-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+        }
+        .note-actions button {
+            font-size: 0.875rem;
+            padding: 0.25rem 0.5rem;
+        }
+    </style>
 </head>
-<body class="bg-yellow-100 text-gray-800">
-<?php include("admin_navbar.php"); ?>
 
+<body class="bg-yellow-100 text-gray-800 ">
+<!-- Navbar -->
+    <?php
+        include("admin_navbar.php");
+    ?>
+    
+<!-- Main -->
 <div class="container mx-auto p-4">
     <h1 class="text-2xl font-bold mb-4">Gestion des Notes</h1>
-
     <!-- Filtre utilisateur et tri -->
     <form method="GET" action="admin_viewnotes.php" id="filterForm" class="flex items-center mb-6 gap-4">
         <div>
@@ -139,7 +172,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_id'])) {
                 <?php endforeach; ?>
             </select>
         </div>
-
         <div>
             <label for="sort" class="font-medium">Trier par :</label>
             <select name="sort" id="sort" class="px-4 py-2 border rounded" onchange="document.getElementById('filterForm').submit()">
@@ -150,50 +182,61 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_id'])) {
             </select>
         </div>
     </form>
-
-    <!-- Affichage des notes -->
     <?php if (isset($error)): ?>
         <p class="text-red-500"><?= htmlspecialchars($error) ?></p>
-    <?php elseif (empty($notes)): ?>
-        <p class="text-gray-600">Aucune note trouvée.</p>
+    <?php endif; ?>
+
+    <?php if (empty($notes)): ?>
+        <p class="text-gray-600">You have no notes yet.</p>
     <?php else: ?>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <?php foreach ($notes as $note): ?>
-                <div class="bg-white border rounded shadow p-4">
-                    <h2 class="font-bold mb-2"><?= htmlspecialchars($note['title']) ?></h2>
-                    <p class="text-gray-600"><?= htmlspecialchars($note['content']) ?></p>
-                    <p class="text-sm text-gray-400 mt-2">Créée le : <?= htmlspecialchars($note['created_at']) ?></p>
-                    <div class="mt-4 flex gap-4">
-                        <!-- Bouton Modifier -->
-                        <button onclick="showEditForm(<?= $note['id'] ?>)" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Modifier</button>
-                        <!-- Bouton Supprimer -->
-                        <form method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette note ?')">
-                            <input type="hidden" name="delete_id" value="<?= htmlspecialchars($note['id']) ?>">
-                            <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Supprimer</button>
-                        </form>
-                    </div>
-                    <!-- Formulaire d'édition caché -->
-                    <div id="edit-form-<?= $note['id'] ?>" class="mt-4 p-4 border rounded bg-gray-50" style="display: none;">
-                        <form method="POST">
-                            <input type="hidden" name="edit_id" value="<?= htmlspecialchars($note['id']) ?>">
-                            <div class="mb-2">
-                                <label for="edit_title" class="font-medium">Titre :</label>
-                                <input type="text" name="edit_title" value="<?= htmlspecialchars($note['title']) ?>" class="w-full px-2 py-1 border rounded">
-                            </div>
-                            <div class="mb-2">
-                                <label for="edit_content" class="font-medium">Contenu :</label>
-                                <textarea name="edit_content" rows="3" class="w-full px-2 py-1 border rounded"><?= htmlspecialchars($note['content']) ?></textarea>
-                            </div>
-                            <div class="flex gap-4">
-                                <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Enregistrer</button>
-                                <button type="button" onclick="hideEditForm(<?= $note['id'] ?>)" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">Annuler</button>
-                            </div>
-                        </form>
-                    </div>
+                <div class="note-card bg-gray-50" id="note-<?= $note['id'] ?>">
+                    <form method="POST">
+                        <input type="hidden" name="note_id" value="<?= $note['id'] ?>">
+                        <div class="mb-2">
+                            <input type="text" name="title" value="<?= htmlspecialchars($note['title']) ?>" class="note-title w-full border rounded p-1">
+                        </div>
+                        <div>
+                            <textarea name="content" rows="3" class="note-content w-full border rounded p-1"><?= htmlspecialchars($note['content']) ?></textarea>
+                        </div>
+                        <div class="note-actions">
+                            <button type="submit" name="update_id" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">Update</button>
+                            <button type="submit" name="delete_id" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Delete</button>
+                        </div>
+                    </form>
                 </div>
             <?php endforeach; ?>
         </div>
     <?php endif; ?>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Get the 'id' parameter from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const noteId = urlParams.get('id'); // Example: '5'
+
+        if (noteId) {
+            // Find the note element with the corresponding ID
+            const noteElement = document.getElementById(`note-${noteId}`);
+            if (noteElement) {
+                // Scroll the element into view
+                noteElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                // Optionally highlight the note for better visibility
+                noteElement.style.backgroundColor = 'gray'; // Light yellow highlight
+                setTimeout(() => {
+                    noteElement.style.backgroundColor = ''; // Remove highlight after 2 seconds
+                }, 2000);
+            }
+        }
+    });
+</script>
+
+
 </body>
 </html>
+
+
+
