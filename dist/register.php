@@ -82,7 +82,7 @@ if (isset($_POST['signUp'])) {
 if (isset($_POST['signIn'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
-    $role = $_POST['role'];
+  
     
     $sql = "SELECT * FROM users WHERE email='$email'";
     $result = $conn->query($sql);
