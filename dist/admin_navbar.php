@@ -13,7 +13,6 @@
     <div class="hidden md:flex items-center space-x-6">
       <ul class="flex space-x-6">
         <li><a href="users.php" class="hover:text-yellow-400 text-white ">Users</a></li>
-        <li><a href="admin_createnotes.php" class="hover:text-yellow-400 text-white">Create Notes</a></li>
         <li><a href="admin_viewnotes.php" class="hover:text-yellow-400 text-white">View Notes</a></li>
       </ul>
       <!-- Logout Icon -->
