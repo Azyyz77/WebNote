@@ -38,7 +38,6 @@
     </div>
     <div class="flex flex-col items-center space-y-4 text-white">
         <a href="users.php" class="hover:text-yellow-400 text-white ">Users</a>
-        <a href="admin_createnotes.php" class="hover:text-yellow-400 text-white">Create Notes</a>
         <a href="admin_viewnotes.php" class="hover:text-yellow-400 text-white">View Notes</a>
         <a href="logout.php" class="text-white hover:text-yellow-600 transition duration-200 transform hover:scale-110">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
