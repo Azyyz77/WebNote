@@ -12,7 +12,9 @@
     <!-- Desktop Menu -->
     <div class="hidden md:flex items-center space-x-6">
       <ul class="flex space-x-6">
+      <li><a href="admin.php" class="hover:text-yellow-400 text-white">Home</a></li>
         <li><a href="users.php" class="hover:text-yellow-400 text-white ">Users</a></li>
+        
         <li><a href="admin_viewnotes.php" class="hover:text-yellow-400 text-white">View Notes</a></li>
       </ul>
       <!-- Logout Icon -->
@@ -37,6 +39,7 @@
         <button id="close-menu" class="text-white text-3xl">×</button>
     </div>
     <div class="flex flex-col items-center space-y-4 text-white">
+        <a href="admin.php" class="hover:text-yellow-400 text-white">Home</a>
         <a href="users.php" class="hover:text-yellow-400 text-white ">Users</a>
         <a href="admin_viewnotes.php" class="hover:text-yellow-400 text-white">View Notes</a>
         <a href="logout.php" class="text-white hover:text-yellow-600 transition duration-200 transform hover:scale-110">

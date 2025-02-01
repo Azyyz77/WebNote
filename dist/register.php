@@ -16,12 +16,12 @@ function sendemail_verify($firstName,$email,$verify_token)
         //Server settings
     
         $mail->isSMTP();                                            //Send using SMTP
-        $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
+        $mail->Host       = 'smtp.gmail.com';                       //Set the SMTP server to send through
         $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-        $mail->Username   = 'bayremakka2003@gmail.com';                     //SMTP username
-        $mail->Password   = 'ozfp gmzy oyac dmor';                               //SMTP password
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;            //Enable implicit TLS encryption
-        $mail->Port       = 587 ;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+        $mail->Username   = 'bayremakka2003@gmail.com';             //SMTP username
+        $mail->Password   = 'ozfp gmzy oyac dmor';                  //SMTP password
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         //Enable implicit TLS encryption
+        $mail->Port       = 587 ;                                   //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
       
         //Recipients
         $mail->setFrom('bayremakka2003@gmail.com', $firstName);
@@ -33,7 +33,7 @@ function sendemail_verify($firstName,$email,$verify_token)
     
         $email_template = "<h1>b>You have Registred to WebNote with this email</h1>
         <h3>Verify your email address to Login with click the below given link</h3>
-        <a href='http://localhost/stage/webNote/dist/verify_email.php?token=$verify_token&email=$email'>Click Me</a>";
+        <a href='http://localhost/stage_project/WebNote/dist/verify_email.php?token=$verify_token&email=$email'>Click Me</a>";
         
         $mail->Body = $email_template;
         $mail->send();
@@ -60,7 +60,7 @@ if (isset($_POST['signUp'])) {
     $result = $conn->query($checkEmail);
     
     if ($result->num_rows > 0) {
-        $_SESSION['signup_status'] = '<i class="fas fa-exclamation-circle"></i>'."Email Address Already Exists!";
+        $_SESSION['signup_status'] = "Email Address Already Exists!";
         header("location:sign_up.php");
         exit();
     } else {
@@ -68,11 +68,11 @@ if (isset($_POST['signUp'])) {
                         VALUES ('$firstName', '$lastName', '$email', '$hashedPassword', '$verify_token', '$verify_token_expiration')";
         if ($conn->query($insertQuery) === TRUE) {
             sendemail_verify("$firstName", "$email", "$verify_token");
-            $_SESSION['signup_work'] = '<i class="fas fa-check-circle"></i>'."Registration Successful. Please verify your Email Address.";
+            $_SESSION['signup_work'] = "Registration Successful. Please verify your Email Address.";
             header("location:sign_up.php");
             exit();
         } else {
-            $_SESSION['signup_status'] = '<i class="fas fa-exclamation-circle"></i>'."Registration Failed!";
+            $_SESSION['signup_status'] = "Registration Failed!";
             header("location:sign_up.php");
             exit();
         }
@@ -111,17 +111,17 @@ if (isset($_POST['signIn'])) {
 
         } else {
             if ($verify_token == "0") {
-                $_SESSION['login_status'] = '<i class="fas fa-exclamation-circle"></i>'."Your Email Address is not Verified. Please Verify your Email Address.";
+                $_SESSION['login_status'] = "Your Email Address is not Verified. Please Verify your Email Address.";
                 header("location:Login.php");
                 exit();
             }else{
-            $_SESSION['login_status'] = '<i class="fas fa-exclamation-circle"></i>'."Incorrect Email or Password!";
+            $_SESSION['login_status'] = "Incorrect Email or Password!";
             header("location:Login.php");
             exit();
             }
         }
     } else {
-        $_SESSION['login_status'] = '<i class="fas fa-exclamation-circle"></i>'."Incorrect Email or Password!";
+        $_SESSION['login_status'] = "Incorrect Email or Password!";
         header("location:Login.php");
         exit();
     }

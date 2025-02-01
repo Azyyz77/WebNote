@@ -48,10 +48,9 @@ if (!isset($_SESSION['email']) ) {
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 w-full max-w-6xl px-4 sm:px-8">
     <!-- Add Button -->
     <div class="text-center p-6 bg-white shadow-lg rounded-lg hover:shadow-2xl transition duration-300">
-      <a href="createnote.php">
-      <button  class="w-full bg-gray-200 text-gray-800 py-3 rounded-lg text-lg hover:bg-gray-300 transition duration-300">
+      <p  class="w-full bg-gray-200 text-gray-800 py-3 rounded-lg text-lg transition duration-300">
         Add
-      </button>
+      </p>
       </a>
       <p class="mt-4 text-gray-600 text-sm">
         Create a new note to organize your thoughts and ideas.
@@ -61,9 +60,9 @@ if (!isset($_SESSION['email']) ) {
 
     <!-- Edit Button -->
     <div class="text-center p-6 bg-white shadow-lg rounded-lg hover:shadow-2xl transition duration-300">
-      <button class="w-full bg-gray-200 text-gray-800 py-3 rounded-lg text-lg hover:bg-gray-300 transition duration-300">
+      <p class="w-full bg-gray-200 text-gray-800 py-3 rounded-lg text-lg  transition duration-300">
         Edit
-      </button>
+      </p>
       <p class="mt-4 text-gray-600 text-sm">
         Update an existing note to refine your ideas.
       </p>
@@ -72,9 +71,9 @@ if (!isset($_SESSION['email']) ) {
 
     <!-- Delete Button -->
     <div class="text-center p-6 bg-white shadow-lg rounded-lg hover:shadow-2xl transition duration-300">
-      <button class="w-full bg-gray-200 text-gray-800 py-3 rounded-lg text-lg hover:bg-gray-300 transition duration-300">
+      <p class="w-full bg-gray-200 text-gray-800 py-3 rounded-lg text-lg  transition duration-300">
         Delete
-      </button>
+      </p>
       <p class="mt-4 text-gray-600 text-sm">
         Remove notes that you no longer need.
       </p>

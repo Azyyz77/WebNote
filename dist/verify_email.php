@@ -14,7 +14,7 @@ if (isset($_GET['token'])) {
         
         // Check if the token has already been used
         if ($row['verify_status'] == "1") {
-            $_SESSION['login_work'] = '<i class="fas fa-check-circle"></i>Email has already been verified. Please login.';
+            $_SESSION['login_work'] = 'Email has already been verified. Please login.';
             header("location: Login.php");
             exit();
         }
@@ -22,7 +22,7 @@ if (isset($_GET['token'])) {
         // Check if the token has expired
         $current_time = date('Y-m-d H:i:s');
         if ($current_time > $row['verify_token_expiration']) {
-            $_SESSION['login_status'] = '<i class="fas fa-exclamation-circle"></i>This verification link has expired.';
+            $_SESSION['login_status'] = 'This verification link has expired.';
             header("location: Login.php");
             exit();
         }
@@ -33,21 +33,21 @@ if (isset($_GET['token'])) {
         $update_result = $conn->query($update_query);
 
         if ($update_result) {
-            $_SESSION['login_work'] = '<i class="fas fa-check-circle"></i>Email has been verified. Please login.';
+            $_SESSION['login_work'] = 'Email has been verified. Please login.';
             header("location: Login.php");
             exit();
         } else {
-            $_SESSION['login_status'] = '<i class="fas fa-exclamation-circle"></i>Failed to verify email. Please try again later.';
+            $_SESSION['login_status'] = 'Failed to verify email. Please try again later.';
             header("location: Login.php");
             exit();
         }
     } else {
-        $_SESSION['login_status'] = '<i class="fas fa-exclamation-circle"></i>This token does not exist.';
+        $_SESSION['login_status'] = 'This token does not exist.';
         header("location: Login.php");
         exit();
     }
 } else {
-    $_SESSION['login_status'] = '<i class="fas fa-exclamation-circle"></i>Not Allowed!';
+    $_SESSION['login_status'] = 'Not Allowed!';
     header("location: Login.php");
     exit();
 }

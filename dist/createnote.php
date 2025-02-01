@@ -15,6 +15,7 @@ if (!isset($_SESSION['email'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WebNote</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 
     <style>
         html, body {
@@ -37,8 +38,10 @@ if (!isset($_SESSION['email'])) {
 
             <textarea name="content" required placeholder="Write your note here..." class="w-full h-32 md:h-96 p-4 text-lg text-gray-700 border rounded-lg focus:outline-none resize-none bg-yellow-50" id="editor"></textarea>
 
-            <button type="submit" id="save-btn" class="mt-4 bg-yellow-300 hover:bg-yellow-600 text-white py-2 px-4 rounded-lg transition duration-200">
-                Enregistrer
+            <button type="submit" id="save-btn" 
+                        class="bg-yellow-300 hover:bg-yellow-400 text-gray-800 py-3 px-6 rounded-lg font-medium transition-all flex items-center gap-2">
+                        <i class="fas fa-save"></i>
+                        Save Note
             </button>
         </form>
         <button id="fullscreen-btn" class="absolute top-4 right-4 bg-yellow-100 hover:bg-yellow-200 text-gray-700 py-2 px-4 rounded-full transition duration-200">
@@ -50,20 +53,8 @@ if (!isset($_SESSION['email'])) {
 
 
     <div class="w-full md:w-[450px] bg-yellow-100 text-gray-900 p-6 flex flex-col rounded-lg shadow-lg">
-    <div class="flex items-center p-3 mb-4 rounded-lg bg-white text-gray-700 border border-gray-300">
-    <form method="GET" action="search_notes.php" class="flex items-center w-full">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M10 18a8 8 0 100-16 8 8 0 000 16z" />
-        </svg>
-        <input 
-            type="text" 
-            name="query" 
-            placeholder="Search for a note" 
-            class="w-full focus:outline-none" 
-            required
-        />
-        <button type="submit" class="hidden"></button>
-    </form>
+    <div class="flex items-center ">
+   
     </div>
         <hr class="border-yellow-300 mb-4" />
         <h2 class="text-2xl font-medium mb-6 text-gray-800">My Notes</h2>

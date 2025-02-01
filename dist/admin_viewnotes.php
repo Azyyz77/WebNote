@@ -103,140 +103,143 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
     }
 
 ?>
+
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mes Notes - WebNote</title>
+    <title>Note Management - WebNote</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.12.0/cdn.min.js"></script>
-    <style>
-        /* Custom CSS for compact notes */
-        .note-card {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            border: 1px solid #e5e7eb;
-            border-radius: 0.5rem;
-            padding: 1rem;
-            background-color: #ffffff;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .note-card:hover {
-            transform: scale(1.02);
-            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-        }
-        .note-title {
-            font-size: 1rem;
-            font-weight: bold;
-            color: #1f2937;
-        }
-        .note-content {
-            font-size: 0.875rem;
-            color: #4b5563;
-            line-height: 1.25rem;
-        }
-        .note-actions {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 0.5rem;
-        }
-        .note-actions button {
-            font-size: 0.875rem;
-            padding: 0.25rem 0.5rem;
-        }
-    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 </head>
+<body class="bg-gray-50">
+    <?php include("admin_navbar.php"); ?>
 
-<body class="bg-yellow-100 text-gray-800 ">
-<!-- Navbar -->
-    <?php
-        include("admin_navbar.php");
-    ?>
-    
-<!-- Main -->
-<div class="container mx-auto p-4">
-    <h1 class="text-2xl font-bold mb-4">Gestion des Notes</h1>
-    <!-- Filtre utilisateur et tri -->
-    <form method="GET" action="admin_viewnotes.php" id="filterForm" class="flex items-center mb-6 gap-4">
-        <div>
-            <label for="user_email" class="font-medium">Filtrer par utilisateur :</label>
-            <select name="user_email" id="user_email" class="px-4 py-2 border rounded" onchange="document.getElementById('filterForm').submit()">
-                <option value="">-- Tous les utilisateurs --</option>
-                <?php foreach ($users as $user): ?>
-                    <option value="<?= htmlspecialchars($user['email']) ?>" <?= $selectedUser === $user['email'] ? 'selected' : '' ?>>
-                        <?= htmlspecialchars($user['email']) ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
+    <div class="container mx-auto p-4 lg:p-8 max-w-7xl">
+        <!-- Header Section -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">Note Management</h1>
+            <p class="text-gray-600">Manage and monitor all user notes</p>
         </div>
-        <div>
-            <label for="sort" class="font-medium">Trier par :</label>
-            <select name="sort" id="sort" class="px-4 py-2 border rounded" onchange="document.getElementById('filterForm').submit()">
-                <option value="date-desc" <?= $sort === 'date-desc' ? 'selected' : '' ?>>Date (plus récent)</option>
-                <option value="date-asc" <?= $sort === 'date-asc' ? 'selected' : '' ?>>Date (plus ancien)</option>
-                <option value="title-asc" <?= $sort === 'title-asc' ? 'selected' : '' ?>>Titre (A-Z)</option>
-                <option value="title-desc" <?= $sort === 'title-desc' ? 'selected' : '' ?>>Titre (Z-A)</option>
-            </select>
-        </div>
-    </form>
-    <?php if (isset($error)): ?>
-        <p class="text-red-500"><?= htmlspecialchars($error) ?></p>
-    <?php endif; ?>
 
-    <?php if (empty($notes)): ?>
-        <p class="text-gray-600">You have no notes yet.</p>
-    <?php else: ?>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <?php foreach ($notes as $note): ?>
-                <div class="note-card bg-gray-50" id="note-<?= $note['id'] ?>">
-                    <form method="POST">
+        <!-- Filters Section -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+            <form method="GET" action="admin_viewnotes.php" class="flex flex-col md:flex-row gap-4">
+                <div class="flex-1">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Filter by user</label>
+                    <select name="user_email" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500">
+                        <option value="">All users</option>
+                        <?php foreach ($users as $user): ?>
+                        <option value="<?= htmlspecialchars($user['email']) ?>" <?= $selectedUser === $user['email'] ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($user['email']) ?>
+                        </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                
+                <div class="flex-1">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Sort by</label>
+                    <select name="sort" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500">
+                        <option value="date-desc" <?= $sort === 'date-desc' ? 'selected' : '' ?>>Date (recent → old)</option>
+                        <option value="date-asc" <?= $sort === 'date-asc' ? 'selected' : '' ?>>Date (old → recent)</option>
+                        <option value="title-asc" <?= $sort === 'title-asc' ? 'selected' : '' ?>>Title (A → Z)</option>
+                        <option value="title-desc" <?= $sort === 'title-desc' ? 'selected' : '' ?>>Title (Z → A)</option>
+                    </select>
+                </div>
+
+                <div class="self-end">
+                    <button type="submit" class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+                        <i class="fas fa-filter mr-2"></i>Apply
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Notes Grid -->
+        <?php if (empty($notes)): ?>
+            <div class="bg-white rounded-lg p-8 text-center text-gray-500">
+                <i class="fas fa-clipboard-list text-4xl mb-4"></i>
+                <p>No notes found</p>
+            </div>
+        <?php else: ?>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <?php foreach ($notes as $note): ?>
+                <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow" id="note-<?= $note['id'] ?>">
+                    <form method="POST" class="p-6">
                         <input type="hidden" name="note_id" value="<?= $note['id'] ?>">
-                        <div class="mb-2">
-                            <input type="text" name="title" value="<?= htmlspecialchars($note['title']) ?>" class="note-title w-full border rounded p-1">
+                        
+                        <!-- Note Header -->
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-sm text-gray-500">
+                                <?= date('m/d/Y H:i', strtotime($note['created_at'])) ?>
+                            </span>
+                            <span class="text-sm text-gray-500">
+                                <?= htmlspecialchars($note['user_email']) ?>
+                            </span>
                         </div>
-                        <div>
-                            <textarea name="content" rows="3" class="note-content w-full border rounded p-1"><?= htmlspecialchars($note['content']) ?></textarea>
+
+                        <!-- Note Content -->
+                        <div class="space-y-4">
+                            <div>
+                                <input type="text" name="title" value="<?= htmlspecialchars($note['title']) ?>" 
+                                    class="w-full px-3 py-2 border-b-2 border-transparent focus:border-indigo-500 focus:outline-none text-lg font-medium">
+                            </div>
+                            
+                            <div>
+                                <textarea name="content" rows="4"
+                                    class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500"><?= htmlspecialchars($note['content']) ?></textarea>
+                            </div>
                         </div>
-                        <div class="note-actions">
-                            <button type="submit" name="update_id" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">Update</button>
-                            <button type="submit" name="delete_id" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Delete</button>
+
+                        <!-- Actions -->
+                        <div class="mt-6 flex justify-end gap-3">
+                            <button type="submit" name="update_id" 
+                                class="px-4 py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors">
+                                <i class="fas fa-save mr-2"></i>Save
+                            </button>
+                            
+                            <button type="submit" name="delete_id" 
+                                class="px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors"
+                                onclick="return confirm('Are you sure you want to delete this note?')">
+                                <i class="fas fa-trash mr-2"></i>Delete
+                            </button>
                         </div>
                     </form>
                 </div>
-            <?php endforeach; ?>
-        </div>
-    <?php endif; ?>
-</div>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+    </div>
 
-<script>
+    <script>
+    // Auto-resize textareas
+    document.querySelectorAll('textarea').forEach(textarea => {
+        textarea.style.height = 'auto';
+        textarea.style.height = textarea.scrollHeight + 'px';
+        
+        textarea.addEventListener('input', () => {
+            textarea.style.height = 'auto';
+            textarea.style.height = textarea.scrollHeight + 'px';
+        });
+    });
+
+    // Note highlight logic
     document.addEventListener('DOMContentLoaded', () => {
-        // Get the 'id' parameter from the URL
         const urlParams = new URLSearchParams(window.location.search);
-        const noteId = urlParams.get('id'); // Example: '5'
+        const noteId = urlParams.get('id');
 
         if (noteId) {
-            // Find the note element with the corresponding ID
             const noteElement = document.getElementById(`note-${noteId}`);
             if (noteElement) {
-                // Scroll the element into view
                 noteElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-                // Optionally highlight the note for better visibility
-                noteElement.style.backgroundColor = 'gray'; // Light yellow highlight
+                noteElement.classList.add('ring-2', 'ring-indigo-500');
                 setTimeout(() => {
-                    noteElement.style.backgroundColor = ''; // Remove highlight after 2 seconds
-                }, 2000);
+                    noteElement.classList.remove('ring-2', 'ring-indigo-500');
+                }, 3000);
             }
         }
     });
-</script>
-
-
+    </script>
 </body>
 </html>
-
-
-
